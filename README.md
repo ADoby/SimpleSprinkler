@@ -17,3 +17,7 @@ Used References:
 5. Add reference to "Stardew Valley.exe" (from steam folder)
 6. Add reference to "StardewModdingAPI.exe" (should be in the same folder if installed)
 7. Build should work
+
+
+# Support
+If you like: [patreon](https://www.patreon.com/TZed?ty=h)
