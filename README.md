@@ -8,7 +8,7 @@ Embeded References:
 - INIFileParser.dll
 
 # Installation
-1. Download Build from [Here (Direct Link, be careful)](https://github.com/ADoby/SimpleSprinkler/raw/master/CurrentBuild/SimpleSprinkler.dll)
+1. Download Build from [Here](https://github.com/ADoby/SimpleSprinkler/releases)
 2. [SMAPI] Copy SimpleSprinkler.dll to %APPDATA%/StardewValley/Mods folder
 3. [SMAPI] Start Game through "StardewModdingAPI.exe"
 
