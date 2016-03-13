@@ -58,6 +58,9 @@
       <HintPath>..\..\..\..\StardewValley\SMAPI_0.37.3A\StardewModdingAPI.exe</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="StormLoader">
+      <HintPath>..\..\..\..\StardewValley\Storm-0.1.1.0_GIT-583fb43\StardewValley\StormLoader.exe</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -68,17 +71,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\DynamicModAPI\SimpleModAPI.cs" />
     <Compile Include="Source\Config\SimpleConfig.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Source\DynamicModAPI\SMAPIModAPI.cs" />
-    <Compile Include="Source\SimpleSprinklerMod.cs" />
+    <Compile Include="Source\STORMMod.cs" />
+    <Compile Include="Source\SMAPIMod.cs" />
+    <Compile Include="Source\Implementation\SimpleSprinklerMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\SimpleSprinkler.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\Settings.settings">

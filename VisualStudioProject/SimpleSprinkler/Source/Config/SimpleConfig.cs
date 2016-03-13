@@ -12,12 +12,6 @@ namespace SimpleSprinkler
 
 		private IniData data;
 
-		public enum APIModes
-		{
-			SMAPI = 1,
-			STORM = 2
-		}
-
 		public KeyDataCollection ConfigRoot
 		{
 			get
@@ -26,31 +20,17 @@ namespace SimpleSprinkler
 			}
 		}
 
-		public int APIMode
+		public bool UseCircularCalculation
 		{
 			get
 			{
-				if (!ConfigRoot.ContainsKey("APIMode"))
-					return 1;
-				return int.Parse(ConfigRoot["APIMode"]);
-			}
-			set
-			{
-				ConfigRoot["APIMode"] = value.ToString();
-			}
-		}
-
-		public bool UseCiruclarCalculation
-		{
-			get
-			{
-				if (!ConfigRoot.ContainsKey("UseCiruclarCalculation"))
+				if (!ConfigRoot.ContainsKey("UseCircularCalculation"))
 					return true;
-				return bool.Parse(ConfigRoot["UseCiruclarCalculation"]);
+				return bool.Parse(ConfigRoot["UseCircularCalculation"]);
 			}
 			set
 			{
-				ConfigRoot["UseCiruclarCalculation"] = value.ToString();
+				ConfigRoot["UseCircularCalculation"] = value.ToString();
 			}
 		}
 
@@ -170,13 +150,13 @@ namespace SimpleSprinkler
 			if (!System.IO.File.Exists(LocalConfigPath))
 			{
 				FixConfig(Instance);
-				SimpleModAPI.LogInfo("Default Config Created:{0}", LocalConfigPath);
+				SimpleSprinklerMod.Log("Default Config Created:{0}", LocalConfigPath);
 			}
 			else
 			{
 				LoadConfig(Instance);
 				FixConfig(Instance);
-				SimpleModAPI.LogInfo("Config Loaded:{0}", LocalConfigPath);
+				SimpleSprinklerMod.Log("Config Loaded:{0}", LocalConfigPath);
 			}
 
 			if (!string.IsNullOrEmpty(Instance.LocationsToListenToString))
@@ -187,18 +167,18 @@ namespace SimpleSprinkler
 					foreach (var name in names)
 					{
 						Instance.LocationsToListenTo.Add(name);
-						SimpleModAPI.LogInfo("Configuration loaded for location:{0}", name);
+						SimpleSprinklerMod.Log("Configuration loaded for location:{0}", name);
 					}
 				}
 				else
 				{
 					Instance.LocationsToListenTo.Add(Instance.LocationsToListenToString);
-					SimpleModAPI.LogInfo("Configuration loaded for location:{0}", Instance.LocationsToListenToString);
+					SimpleSprinklerMod.Log("Configuration loaded for location:{0}", Instance.LocationsToListenToString);
 				}
 			}
 			else
 			{
-				SimpleModAPI.LogInfo("No locations are configurated:{0}", Instance.LocationsToListenToString);
+				SimpleSprinklerMod.Log("No locations are configurated:{0}", Instance.LocationsToListenToString);
 			}
 		}
 
@@ -212,11 +192,17 @@ namespace SimpleSprinkler
 			if (config.data == null)
 				config.data = new IniParser.Model.IniData();
 
-			if (!config.ConfigRoot.ContainsKey("APIMode"))
-				config.ConfigRoot.AddKey("APIMode", ((int)APIModes.SMAPI).ToString());
-
-			if (!config.ConfigRoot.ContainsKey("UseCiruclarCalculation"))
-				config.ConfigRoot.AddKey("UseCiruclarCalculation", "true");
+			if (!config.ConfigRoot.ContainsKey("UseCircularCalculation"))
+			{
+				//Upgrade check (first version spelling mistake)
+				if (config.ConfigRoot.ContainsKey("UseCiruclarCalculation"))
+				{
+					config.ConfigRoot.AddKey("UseCircularCalculation", config.ConfigRoot["UseCiruclarCalculation"]);
+					config.ConfigRoot.RemoveKey("UseCiruclarCalculation");
+				}
+				else
+					config.ConfigRoot.AddKey("UseCircularCalculation", "true");
+			}
 
 			if (!config.ConfigRoot.ContainsKey("Level1SprinklerID"))
 				config.ConfigRoot.AddKey("Level1SprinklerID", "599");
