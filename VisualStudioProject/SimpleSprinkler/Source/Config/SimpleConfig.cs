@@ -40,17 +40,17 @@ namespace SimpleSprinkler
 			}
 		}
 
-		public bool UseCiruclarCalcuation
+		public bool UseCiruclarCalculation
 		{
 			get
 			{
-				if (!ConfigRoot.ContainsKey("UseCiruclarCalcuation"))
+				if (!ConfigRoot.ContainsKey("UseCiruclarCalculation"))
 					return true;
-				return bool.Parse(ConfigRoot["UseCiruclarCalcuation"]);
+				return bool.Parse(ConfigRoot["UseCiruclarCalculation"]);
 			}
 			set
 			{
-				ConfigRoot["UseCiruclarCalcuation"] = value.ToString();
+				ConfigRoot["UseCiruclarCalculation"] = value.ToString();
 			}
 		}
 
@@ -214,6 +214,9 @@ namespace SimpleSprinkler
 
 			if (!config.ConfigRoot.ContainsKey("APIMode"))
 				config.ConfigRoot.AddKey("APIMode", ((int)APIModes.SMAPI).ToString());
+
+			if (!config.ConfigRoot.ContainsKey("UseCiruclarCalculation"))
+				config.ConfigRoot.AddKey("UseCiruclarCalculation", "true");
 
 			if (!config.ConfigRoot.ContainsKey("Level1SprinklerID"))
 				config.ConfigRoot.AddKey("Level1SprinklerID", "599");

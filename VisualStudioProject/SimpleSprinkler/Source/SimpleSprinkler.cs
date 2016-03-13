@@ -14,7 +14,7 @@ namespace SimpleSprinkler
 				for (location.Y = start.Y - range; location.Y <= start.Y + range; location.Y++)
 				{
 					//Circle Mode Clamp, AwayFromZero is used to get a cleaner look which creates longer outer edges
-					if (SimpleConfig.Instance.UseCiruclarCalcuation && System.Math.Round(Vector2.Distance(start, location), System.MidpointRounding.AwayFromZero) > range)
+					if (SimpleConfig.Instance.UseCiruclarCalculation && System.Math.Round(Vector2.Distance(start, location), System.MidpointRounding.AwayFromZero) > range)
 						continue;
 					SetWatered(farm, location);
 				}
