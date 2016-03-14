@@ -37,6 +37,7 @@ namespace SimpleSprinkler.Source.DynamicModAPI
 		}
 
 		private SimpleSprinklerMod mod;
+		private GameLocation location;
 
 		public override void Entry(params object[] objects)
 		{
@@ -47,53 +48,20 @@ namespace SimpleSprinkler.Source.DynamicModAPI
 
 		private void LocationEvents_CurrentLocationChanged(object sender, EventArgsCurrentLocationChanged e)
 		{
-			if (!Config.LocationsToListenTo.Contains(e.NewLocation.Name))
+			if (!Config.Locations.Contains(e.NewLocation.Name))
 				return;
-			CalculateLocation(e.NewLocation);
-		}
-
-		public void CalculateLocation(GameLocation location)
-		{
-			SimpleSprinklerMod.Log("Updating Location:{0}", location.Name);
+			location = e.NewLocation;
 			foreach (var obj in location.Objects.Values)
 			{
-				if (obj.ParentSheetIndex == Config.Level1SprinklerID)
-				{
-					CalculateSimpleSprinkler(location, obj.TileLocation, Config.Level1SprinklerRange);
-				}
-				else if (obj.parentSheetIndex == Config.Level2SprinklerID)
-				{
-					CalculateSimpleSprinkler(location, obj.TileLocation, Config.Level2SprinklerRange);
-				}
-				else if (obj.parentSheetIndex == Config.Level3SprinklerID)
-				{
-					CalculateSimpleSprinkler(location, obj.TileLocation, Config.Level3SprinklerRange);
-				}
+				mod.CalculateSimpleSprinkler(obj.ParentSheetIndex, obj.TileLocation, SetWatered);
 			}
 		}
 
-		public void CalculateSimpleSprinkler(GameLocation farm, Vector2 start, float range)
+		public void SetWatered(Vector2 position)
 		{
-			if (farm == null)
-				return;
-			Vector2 location = start;
-			for (location.X = start.X - range; location.X <= start.X + range; location.X++)
+			if (location.terrainFeatures.ContainsKey(position) && location.terrainFeatures[position] is HoeDirt)
 			{
-				for (location.Y = start.Y - range; location.Y <= start.Y + range; location.Y++)
-				{
-					//Circle Mode Clamp, AwayFromZero is used to get a cleaner look which creates longer outer edges
-					if (SimpleConfig.Instance.UseCircularCalculation && System.Math.Round(Vector2.Distance(start, location), System.MidpointRounding.AwayFromZero) > range)
-						continue;
-					SetWatered(farm, location);
-				}
-			}
-		}
-
-		public void SetWatered(GameLocation farm, Vector2 location)
-		{
-			if (farm.terrainFeatures.ContainsKey(location) && farm.terrainFeatures[location] is HoeDirt)
-			{
-				(farm.terrainFeatures[location] as HoeDirt).state = HoeDirt.watered;
+				(location.terrainFeatures[position] as HoeDirt).state = HoeDirt.watered;
 			}
 		}
 	}
