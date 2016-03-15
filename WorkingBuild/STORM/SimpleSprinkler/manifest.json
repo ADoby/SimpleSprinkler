@@ -1,0 +1,8 @@
+{
+    "displayName": "SimpleSprinkler",
+    "author": "tZed",
+    "version": "1.2",
+    "description": "Goes in %appdata% StardewValley/Mods/SimpleSprinkler with your dll.",
+
+    "assemblyFileName": "SimpleSprinkler_STORM.dll"
+}

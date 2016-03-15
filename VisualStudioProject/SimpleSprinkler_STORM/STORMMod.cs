@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using SimpleSprinkler;
+using Storm;
 using Storm.ExternalEvent;
+using Storm.StardewValley.Accessor;
 using Storm.StardewValley.Event;
 using Storm.StardewValley.Wrapper;
 using System;
@@ -26,7 +28,7 @@ namespace SimpleSprinkler_STORM
 		public void InitializeCallback(InitializeEvent @event)
 		{
 			SetUpEmbededAssemblyResolving();
-			SimpleSprinklerMod.Log("STORM Loaded");
+			Logging.Logs("STORM loaded");
 			mod = new SimpleSprinklerMod();
 		}
 
@@ -36,18 +38,20 @@ namespace SimpleSprinkler_STORM
 			location = @event.Location;
 			foreach (var obj in location.Objects.Values)
 			{
-				//Does not work yet, because STORM needs "parentSheetIndex" property
-				//Workaround using NAME
-				SimpleSprinklerMod.Log("Trying to sprinkler with {0}", obj.Name);
-				mod.CalculateSimpleSprinkler(obj.Name, obj.TileLocation, SetWatered);
+				//WorkAround using ObjectAccessor
+				mod.CalculateSimpleSprinkler(obj.Cast<ObjectAccessor>()._GetParentSheetIndex(), obj.TileLocation, SetWatered);
 			}
 		}
 
 		public void SetWatered(Vector2 position)
 		{
-			if (location.TerrainFeatures.ContainsKey(position) && location.TerrainFeatures[position] is HoeDirt)
+			if (!location.TerrainFeatures.ContainsKey(position))
 			{
-				(location.TerrainFeatures[position] as HoeDirt).State = 1;
+				return;
+			}
+			if (location.TerrainFeatures[position].Is<HoeDirtAccessor>())
+			{
+				location.TerrainFeatures[position].Cast<HoeDirtAccessor>()._SetState(1);
 			}
 		}
 

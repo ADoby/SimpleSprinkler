@@ -40,7 +40,6 @@
     </Reference>
     <Reference Include="StormLoader">
       <HintPath>..\..\..\..\StardewValley\Storm\StardewValley\StormLoader.exe</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
