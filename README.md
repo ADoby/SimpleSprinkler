@@ -4,6 +4,7 @@ Used References:
 - Stardew Valley 1.0.5912.41135 ([Steam](http://store.steampowered.com/app/413150/?l=german)) 
 
 - SMAPI 37.3A ([Link](http://community.playstarbound.com/threads/stardew-modding-api-0-37.108375/))
+
 or
 - STORM db48478 ([Link](http://community.playstarbound.com/threads/storm-modding-api-literally-use-1-05-before-posting-i-will-know.108484/))
 
