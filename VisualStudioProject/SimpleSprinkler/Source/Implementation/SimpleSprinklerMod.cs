@@ -1,6 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using StardewValley;
-using StardewValley.TerrainFeatures;
 using System;
 
 using System.Reflection;
@@ -9,11 +7,6 @@ namespace SimpleSprinkler
 {
 	public class SimpleSprinklerMod
 	{
-		public const string _ModName = "Simple Sprinkler";
-		public const string _ModAuthour = "Tobias Z";
-		public const string _ModVersion = "1.1";
-		public const string _ModDescription = "Better Sprinkler";
-
 		private SimpleConfig Config;
 
 		public SimpleSprinklerMod()
@@ -42,12 +35,47 @@ namespace SimpleSprinkler
 			return false;
 		}
 
+		public bool IsSimpleSprinkler(string name, out float range)
+		{
+			if (name.Equals("Sprinkler"))
+			{
+				return IsSimpleSprinkler(599, out range);
+			}
+			if (name.Equals("Quality Sprinkler"))
+			{
+				return IsSimpleSprinkler(621, out range);
+			}
+			if (name.Equals("Iridium Sprinkler"))
+			{
+				return IsSimpleSprinkler(645, out range);
+			}
+			range = 0f;
+			return false;
+		}
+
 		public void CalculateSimpleSprinkler(int parentSheetIndex, Vector2 start, Action<Vector2> wateringHandler)
 		{
 			if (wateringHandler == null)
 				return;
 			float range = 0f;
 			if (IsSimpleSprinkler(parentSheetIndex, out range) == false)
+				return;
+			CalculateSimpleSprinkler(range, start, wateringHandler);
+		}
+
+		public void CalculateSimpleSprinkler(string sprinklerName, Vector2 start, Action<Vector2> wateringHandler)
+		{
+			if (wateringHandler == null)
+				return;
+			float range = 0f;
+			if (IsSimpleSprinkler(sprinklerName, out range) == false)
+				return;
+			CalculateSimpleSprinkler(range, start, wateringHandler);
+		}
+
+		public void CalculateSimpleSprinkler(float range, Vector2 start, Action<Vector2> wateringHandler)
+		{
+			if (wateringHandler == null)
 				return;
 			if (Config.CalculationMethod == (int)SimpleConfig.CalculationMethods.VANILLA)
 			{
