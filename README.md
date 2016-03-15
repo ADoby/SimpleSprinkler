@@ -32,4 +32,5 @@ Embeded References:
 
 
 # Support
+[Forum](http://community.playstarbound.com/threads/smapi-simple-sprinkler.109782/)
 If you like: [patreon](https://www.patreon.com/TZed?ty=h)
