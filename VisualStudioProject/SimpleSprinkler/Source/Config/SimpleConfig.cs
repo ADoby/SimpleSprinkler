@@ -24,7 +24,9 @@ namespace SimpleSprinkler
 		{
 			VANILLA,
 			BOX,
-			CIRCLE
+			CIRCLE,
+			HORIZONTAL,
+			VERTICAL
 		}
 
 		private const string OldCalculationMethod_Key = "UseCiruclarCalculation";

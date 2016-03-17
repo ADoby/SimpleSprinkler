@@ -25,7 +25,7 @@ namespace SimpleSprinkler_SMAPI
 		{
 			get
 			{
-				return "1.1";
+				return "1.3";
 			}
 		}
 

@@ -89,6 +89,14 @@ namespace SimpleSprinkler
 			{
 				CalculateCircleAndBox(start, range, wateringHandler, true);
 			}
+			else if (Config.CalculationMethod == (int)SimpleConfig.CalculationMethods.HORIZONTAL)
+			{
+				CalculateHorizontal(start, range, wateringHandler, true);
+			}
+			else if (Config.CalculationMethod == (int)SimpleConfig.CalculationMethods.VERTICAL)
+			{
+				CalculateVertical(start, range, wateringHandler, true);
+			}
 		}
 
 		private void CalculateCircleAndBox(Vector2 start, float range, Action<Vector2> wateringHandler, bool circle)
@@ -103,6 +111,24 @@ namespace SimpleSprinkler
 						continue;
 					wateringHandler.Invoke(location);
 				}
+			}
+		}
+
+		private void CalculateHorizontal(Vector2 start, float range, Action<Vector2> wateringHandler, bool circle)
+		{
+			Vector2 location = start;
+			for (location.X = start.X - range; location.X <= start.X + range; location.X++)
+			{
+				wateringHandler.Invoke(location);
+			}
+		}
+
+		private void CalculateVertical(Vector2 start, float range, Action<Vector2> wateringHandler, bool circle)
+		{
+			Vector2 location = start;
+			for (location.Y = start.Y - range; location.Y <= start.Y + range; location.Y++)
+			{
+				wateringHandler.Invoke(location);
 			}
 		}
 
