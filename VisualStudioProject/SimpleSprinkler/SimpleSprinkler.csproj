@@ -11,6 +11,8 @@
     <AssemblyName>SimpleSprinkler</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,8 +33,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="INIFileParser">
-      <HintPath>EmbededAssemblies\INIFileParser.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\StardewValley\INIFileParser.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
@@ -49,6 +51,18 @@
     <Reference Include="Microsoft.Xna.Framework.Xact, Version=4.0.0.0, Culture=neutral, PublicKeyToken=842cf8be1de50553, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\Windows\Microsoft.NET\assembly\GAC_32\Microsoft.Xna.Framework.Xact\v4.0_4.0.0.0__842cf8be1de50553\Microsoft.Xna.Framework.Xact.dll</HintPath>
+    </Reference>
+    <Reference Include="Stardew Valley">
+      <HintPath>C:\Program Files (x86)\Steam\SteamApps\common\Stardew Valley\Stardew Valley.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="StardewModdingAPI">
+      <HintPath>..\..\..\..\StardewValley\SMAPI\StardewModdingAPI.exe</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="StormLoader">
+      <HintPath>..\..\..\Storm\Storm\Storm\bin\Release\StormLoader.exe</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -68,21 +82,37 @@
     </Compile>
     <Compile Include="Source\Implementation\SimpleSprinklerMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Source\SMAPIMod.cs" />
+    <Compile Include="Source\STORMMod.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="manifest.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="EmbededAssemblies\INIFileParser.dll" />
+    <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>
-    </PostBuildEvent>
+    <PostBuildEvent>xcopy /Y "$(TargetPath)" "$(SolutionDir)..\CurrentBuild\"
+xcopy /Y "$(TargetPath)" "C:\Users\ADoby\AppData\Roaming\StardewValley\Mods\SimpleSprinkler\"
+cd $(TargetDir)
+xcopy /Y "manifest.json" "$(SolutionDir)..\CurrentBuild\"
+xcopy /Y "manifest.json" "C:\Users\ADoby\AppData\Roaming\StardewValley\Mods\SimpleSprinkler\"</PostBuildEvent>
   </PropertyGroup>
+  <Import Project="..\packages\Fody.1.28.3\build\Fody.targets" Condition="Exists('..\packages\Fody.1.28.3\build\Fody.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Fody.1.28.3\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.28.3\build\Fody.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
