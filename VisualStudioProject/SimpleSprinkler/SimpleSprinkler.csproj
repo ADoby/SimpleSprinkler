@@ -60,10 +60,6 @@
       <HintPath>..\..\..\..\StardewValley\SMAPI\StardewModdingAPI.exe</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="StormLoader">
-      <HintPath>..\..\..\Storm\Storm\Storm\bin\Release\StormLoader.exe</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

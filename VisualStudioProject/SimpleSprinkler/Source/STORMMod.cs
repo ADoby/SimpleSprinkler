@@ -1,15 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using SimpleSprinkler;
-using Storm;
-using Storm.ExternalEvent;
-using Storm.StardewValley.Wrapper;
 using System;
 using System.Reflection;
 
 namespace SimpleSprinkler_STORM
 {
-	[Mod]
-	internal class STORMMod : DiskResource
+	internal class STORMMod
 	{
 		private SimpleConfig Config
 		{
@@ -19,6 +15,7 @@ namespace SimpleSprinkler_STORM
 			}
 		}
 
+		/*
 		private SimpleSprinklerMod mod;
 		private GameLocation location;
 
@@ -38,19 +35,18 @@ namespace SimpleSprinkler_STORM
 				//WorkAround using ObjectAccessor
 				mod.CalculateSimpleSprinkler(obj.Cast<ObjectAccessor>()._GetParentSheetIndex(), obj.TileLocation, SetWatered);
 			}*/
-		}
-
-		/*
-		public void SetWatered(Vector2 position)
-		{
-			if (!location.TerrainFeatures.ContainsKey(position))
-			{
-				return;
-			}
-			if (location.TerrainFeatures[position].Is<HoeDirtAccessor>())
-			{
-				location.TerrainFeatures[position].Cast<HoeDirtAccessor>()._SetState(1);
-			}
-		}*/
 	}
+
+	/*
+	public void SetWatered(Vector2 position)
+	{
+		if (!location.TerrainFeatures.ContainsKey(position))
+		{
+			return;
+		}
+		if (location.TerrainFeatures[position].Is<HoeDirtAccessor>())
+		{
+			location.TerrainFeatures[position].Cast<HoeDirtAccessor>()._SetState(1);
+		}
+	}*/
 }
