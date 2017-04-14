@@ -21,9 +21,9 @@ namespace SimpleSprinkler
         /*********
         ** Public methods
         *********/
-        public override void Entry(params object[] objects)
+        public override void Entry(IModHelper helper)
         {
-            this.Config = this.Helper.ReadConfig<SimpleConfig>();
+            this.Config = helper.ReadConfig<SimpleConfig>();
 
             LocationEvents.CurrentLocationChanged += LocationEvents_CurrentLocationChanged;
         }
@@ -71,7 +71,7 @@ namespace SimpleSprinkler
         {
             if (wateringHandler == null)
                 return;
-            float range = 0f;
+            float range;
             if (IsSimpleSprinkler(parentSheetIndex, out range) == false)
                 return;
             CalculateSimpleSprinkler(range, start, wateringHandler);

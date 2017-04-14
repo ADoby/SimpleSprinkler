@@ -1,13 +1,13 @@
 {
   "Name": "SimpleSprinkler",
-  "Authour": "tZed",
+  "Author": "tZed",
   "Version": {
     "MajorVersion": 1,
     "MinorVersion": 4,
     "PatchVersion": 0,
-    "Build": ""
+    "Build": null
   },
-  "Description": "Goes in %appdata% StardewValley/Mods/SimpleSprinkler with your dll.",
-
-  "EntryDll": "SimpleSprinkler.dll",
+  "Description": "Lets you customise your sprinkler coverage radius.",
+  "UniqueID": "tZed.SimpleSprinkler",
+  "EntryDll": "SimpleSprinkler.dll"
 }
