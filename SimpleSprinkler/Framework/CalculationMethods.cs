@@ -1,6 +1,6 @@
-﻿namespace SimpleSprinkler
+﻿namespace SimpleSprinkler.Framework
 {
-    public enum CalculationMethods
+    internal enum CalculationMethods
     {
         VANILLA,
         BOX,

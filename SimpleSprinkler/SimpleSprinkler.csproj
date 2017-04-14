@@ -36,15 +36,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Source\Config\CalculationMethods.cs" />
-    <Compile Include="Source\Config\SimpleConfig.cs" />
+    <Compile Include="Framework\CalculationMethods.cs" />
+    <Compile Include="Framework\SimpleConfig.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\SMAPIMod.cs" />
+    <Compile Include="SMAPIMod.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="manifest.json">

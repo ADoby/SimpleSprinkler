@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace SimpleSprinkler
+namespace SimpleSprinkler.Framework
 {
-    public class SimpleConfig
+    internal class SimpleConfig
     {
         public CalculationMethods CalculationMethod { get; set; } = CalculationMethods.CIRCLE;
         public string[] Locations { get; set; } = { "Farm", "Greenhouse" };

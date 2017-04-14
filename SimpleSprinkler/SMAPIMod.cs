@@ -2,13 +2,13 @@
 using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
-using SimpleSprinkler;
+using SimpleSprinkler.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
 
-namespace SimpleSprinkler_SMAPI
+namespace SimpleSprinkler
 {
     internal class SMAPIMod : Mod
     {
