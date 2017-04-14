@@ -43,7 +43,6 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Source\Implementation\SimpleSprinklerMod.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\SMAPIMod.cs" />
   </ItemGroup>
