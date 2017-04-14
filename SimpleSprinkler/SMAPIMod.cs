@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using Microsoft.Xna.Framework;
 using SimpleSprinkler.Framework;
 using StardewModdingAPI;
@@ -24,7 +23,6 @@ namespace SimpleSprinkler
         *********/
         public override void Entry(params object[] objects)
         {
-            this.SetUpEmbededAssemblyResolving();
             this.Config = this.Helper.ReadConfig<SimpleConfig>();
 
             LocationEvents.CurrentLocationChanged += LocationEvents_CurrentLocationChanged;
@@ -55,11 +53,6 @@ namespace SimpleSprinkler
                 ((HoeDirt)Location.terrainFeatures[position]).state = HoeDirt.watered;
         }
 
-        private static void Log(string message, params object[] values)
-        {
-            Console.WriteLine(string.Format("[SimpleSprinkler]:{0}", string.Format(message, values)));
-        }
-
         private bool IsSimpleSprinkler(int parentSheetIndex, out float range)
         {
             foreach (var sprinkler in this.Config.SprinklerConfiguration)
@@ -69,24 +62,6 @@ namespace SimpleSprinkler
                     range = sprinkler.Value;
                     return true;
                 }
-            }
-            range = 0f;
-            return false;
-        }
-
-        private bool IsSimpleSprinkler(string name, out float range)
-        {
-            if (name.Equals("Sprinkler"))
-            {
-                return IsSimpleSprinkler(599, out range);
-            }
-            if (name.Equals("Quality Sprinkler"))
-            {
-                return IsSimpleSprinkler(621, out range);
-            }
-            if (name.Equals("Iridium Sprinkler"))
-            {
-                return IsSimpleSprinkler(645, out range);
             }
             range = 0f;
             return false;
@@ -102,39 +77,24 @@ namespace SimpleSprinkler
             CalculateSimpleSprinkler(range, start, wateringHandler);
         }
 
-        private void CalculateSimpleSprinkler(string sprinklerName, Vector2 start, Action<Vector2> wateringHandler)
-        {
-            if (wateringHandler == null)
-                return;
-            float range = 0f;
-            if (IsSimpleSprinkler(sprinklerName, out range) == false)
-                return;
-            CalculateSimpleSprinkler(range, start, wateringHandler);
-        }
-
         private void CalculateSimpleSprinkler(float range, Vector2 start, Action<Vector2> wateringHandler)
         {
             if (wateringHandler == null)
                 return;
-            if (Config.CalculationMethod == (int)CalculationMethods.VANILLA)
+            switch (Config.CalculationMethod)
             {
-                return;
-            }
-            else if (Config.CalculationMethod == CalculationMethods.BOX)
-            {
-                CalculateCircleAndBox(start, range, wateringHandler, false);
-            }
-            else if (Config.CalculationMethod == CalculationMethods.CIRCLE)
-            {
-                CalculateCircleAndBox(start, range, wateringHandler, true);
-            }
-            else if (Config.CalculationMethod == CalculationMethods.HORIZONTAL)
-            {
-                CalculateHorizontal(start, range, wateringHandler, true);
-            }
-            else if (Config.CalculationMethod == CalculationMethods.VERTICAL)
-            {
-                CalculateVertical(start, range, wateringHandler, true);
+                case CalculationMethods.BOX:
+                    CalculateCircleAndBox(start, range, wateringHandler, false);
+                    break;
+                case CalculationMethods.CIRCLE:
+                    CalculateCircleAndBox(start, range, wateringHandler, true);
+                    break;
+                case CalculationMethods.HORIZONTAL:
+                    CalculateHorizontal(start, range, wateringHandler, true);
+                    break;
+                case CalculationMethods.VERTICAL:
+                    CalculateVertical(start, range, wateringHandler, true);
+                    break;
             }
         }
 
@@ -146,7 +106,7 @@ namespace SimpleSprinkler
                 for (location.Y = start.Y - range; location.Y <= start.Y + range; location.Y++)
                 {
                     //Circle Mode Clamp, AwayFromZero is used to get a cleaner look which creates longer outer edges
-                    if (circle && System.Math.Round(Vector2.Distance(start, location), System.MidpointRounding.AwayFromZero) > range)
+                    if (circle && Math.Round(Vector2.Distance(start, location), MidpointRounding.AwayFromZero) > range)
                         continue;
                     wateringHandler.Invoke(location);
                 }
@@ -169,22 +129,6 @@ namespace SimpleSprinkler
             {
                 wateringHandler.Invoke(location);
             }
-        }
-
-        private void SetUpEmbededAssemblyResolving()
-        {
-            AppDomain.CurrentDomain.AssemblyResolve += (sender, args) =>
-            {
-                string resourceName = new AssemblyName(args.Name).Name + ".dll";
-                string resource = Array.Find(this.GetType().Assembly.GetManifestResourceNames(), element => element.EndsWith(resourceName));
-
-                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resource))
-                {
-                    Byte[] assemblyData = new Byte[stream.Length];
-                    stream.Read(assemblyData, 0, assemblyData.Length);
-                    return Assembly.Load(assemblyData);
-                }
-            };
         }
     }
 }
