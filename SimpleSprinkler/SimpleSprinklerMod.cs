@@ -9,7 +9,7 @@ using StardewValley.TerrainFeatures;
 
 namespace SimpleSprinkler
 {
-    internal class SMAPIMod : Mod
+    internal class SimpleSprinklerMod : Mod
     {
         /*********
         ** Properties
@@ -55,7 +55,7 @@ namespace SimpleSprinkler
 
         private bool IsSimpleSprinkler(int parentSheetIndex, out float range)
         {
-            foreach (var sprinkler in this.Config.SprinklerConfiguration)
+            foreach (var sprinkler in this.Config.Radius)
             {
                 if (parentSheetIndex == sprinkler.Key)
                 {
