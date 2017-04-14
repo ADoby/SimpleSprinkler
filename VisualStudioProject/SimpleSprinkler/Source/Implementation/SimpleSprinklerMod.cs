@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
-
 using System.Reflection;
 
 namespace SimpleSprinkler
@@ -9,11 +8,10 @@ namespace SimpleSprinkler
 	{
 		private SimpleConfig Config;
 
-		public SimpleSprinklerMod()
+		public SimpleSprinklerMod(SimpleConfig config)
 		{
 			SetUpEmbededAssemblyResolving();
-			Config = new SimpleConfig();
-			Config.Init();
+			this.Config = config;
 		}
 
 		public static void Log(string message, params object[] values)
@@ -23,11 +21,11 @@ namespace SimpleSprinkler
 
 		public bool IsSimpleSprinkler(int parentSheetIndex, out float range)
 		{
-			foreach (var sprinkler in Config.SprinklerConfigs)
+			foreach (var sprinkler in this.Config.SprinklerConfiguration)
 			{
-				if (parentSheetIndex == sprinkler.ParentSheetIndex)
+				if (parentSheetIndex == sprinkler.Key)
 				{
-					range = sprinkler.Range;
+					range = sprinkler.Value;
 					return true;
 				}
 			}
@@ -77,23 +75,23 @@ namespace SimpleSprinkler
 		{
 			if (wateringHandler == null)
 				return;
-			if (Config.CalculationMethod == (int)SimpleConfig.CalculationMethods.VANILLA)
+			if (Config.CalculationMethod == (int)CalculationMethods.VANILLA)
 			{
 				return;
 			}
-			else if (Config.CalculationMethod == (int)SimpleConfig.CalculationMethods.BOX)
+			else if (Config.CalculationMethod == CalculationMethods.BOX)
 			{
 				CalculateCircleAndBox(start, range, wateringHandler, false);
 			}
-			else if (Config.CalculationMethod == (int)SimpleConfig.CalculationMethods.CIRCLE)
+			else if (Config.CalculationMethod == CalculationMethods.CIRCLE)
 			{
 				CalculateCircleAndBox(start, range, wateringHandler, true);
 			}
-			else if (Config.CalculationMethod == (int)SimpleConfig.CalculationMethods.HORIZONTAL)
+			else if (Config.CalculationMethod == CalculationMethods.HORIZONTAL)
 			{
 				CalculateHorizontal(start, range, wateringHandler, true);
 			}
-			else if (Config.CalculationMethod == (int)SimpleConfig.CalculationMethods.VERTICAL)
+			else if (Config.CalculationMethod == CalculationMethods.VERTICAL)
 			{
 				CalculateVertical(start, range, wateringHandler, true);
 			}

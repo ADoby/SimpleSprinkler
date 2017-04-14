@@ -4,26 +4,22 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.TerrainFeatures;
+using System.Linq;
 
 namespace SimpleSprinkler_SMAPI
 {
 	internal class SMAPIMod : Mod
 	{
-		private SimpleConfig Config
-		{
-			get
-			{
-				return SimpleConfig.Instance;
-			}
-		}
-
+	    private SimpleConfig Config;
 		private SimpleSprinklerMod mod;
 		private GameLocation location;
 
 		public override void Entry(params object[] objects)
 		{
 			SimpleSprinklerMod.Log("SMAPI Loaded");
-			mod = new SimpleSprinklerMod();
+		    this.Config = this.Helper.ReadConfig<SimpleConfig>();
+
+            mod = new SimpleSprinklerMod(this.Config);
 			LocationEvents.CurrentLocationChanged += LocationEvents_CurrentLocationChanged;
 		}
 
