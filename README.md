@@ -1,36 +1,51 @@
-# SimpleSprinkler
+**SimpleSprinkler** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you customise
+the sprinkler coverage radius by editing the `config.json`.
 
-Used References:
-- Stardew Valley 1.0.5912.41135 ([Steam](http://store.steampowered.com/app/413150/?l=german)) 
+Compatible with Stardew Valley 1.1+ on Linux, Mac, and Windows. Requires SMAPI 1.9+.
 
-- SMAPI 37.3A ([Link](http://community.playstarbound.com/threads/stardew-modding-api-0-37.108375/)) (should work with newer versions)
+## Install
+1. [Install the latest version of SMAPI](https://github.com/Pathoschild/SMAPI/releases).
+2. Download the mod from the [releases page](https://github.com/ADoby/SimpleSprinkler/releases).
+3. Unzip it into your game's `Mods` folder.
+4. Run the game using SMAPI.
 
-or
-- STORM db48478 ([Link](http://community.playstarbound.com/threads/storm-modding-api-literally-use-1-05-before-posting-i-will-know.108484/)) (should work with newer versions)
+## Configure
+The mod will work fine out of the box, but you can tweak its settings by editing the `config.json`
+file if you want. (The file might only appear after you launch the game with the mod installed.)
+These are the available settings:
 
-Embeded References:
-- INIFileParser.dll
+setting                | what it affects
+---------------------- | -------------------
+`CalculationMethod` | How the radius should be calculated. The possible values are `vanilla` (game default), `box` (square area), `circle` (a circular area centered on the sprinkler), or `horizontal` / `vertical` (a line centered on the sprinkler). Default `circle`.
+`Locations`          | Where sprinklers should be customised. The default value is fine unless you have custom locations. Default `Farm` and `Greenhouse`.
+`Radius`             | The sprinkler radius for each type. The available types are `599` (basic sprinker), `621` (quality sprinkler), and `645` (iridium sprinkler). Default values 2, 3, and 5 respectively.
 
-# Installation
-1. Download Build from [Here](https://github.com/ADoby/SimpleSprinkler/releases)
+## Compiling the mods
+Installing stable releases from Nexus Mods is recommended for most users. If you really want to
+compile the mod yourself, read on.
 
-2. [SMAPI] Copy SimpleSprinkler.dll to %APPDATA%/StardewValley/Mods folder
-3. [SMAPI] Start Game through "StardewModdingAPI.exe"
+This mod uses the [crossplatform build config](https://github.com/Pathoschild/Stardew.ModBuildConfig#readme)
+so it can be built on Linux, Mac, and Windows without changes. See [the build config documentation](https://github.com/Pathoschild/Stardew.ModBuildConfig#readme)
+for troubleshooting.
 
-2. [STORM] Copy SimpleSprinkler (Folder) to %APPDATA%/StardewValley/Mods folder
-3. [STORM] Start Game through "StormLoader.exe"
+### Compiling for testing
+To compile the mod and add it to your game's `Mods` directory:
 
-# Modding Start
-1. Buy and Download Stardew Valley (e.g. from Steam)
-2. Download and Install SMAPI listed aboth
-3. Fork Project
-4. Open Visual Studio Project
-5. Add reference to "Stardew Valley.exe" (from steam folder)
-6. Add reference to "StardewModdingAPI.exe" to SMAPI Project (should be in the same folder if installed)
-6. Add reference to "StormLoader.exe" to STORM Project (should be in the same folder if installed)
-7. Build should work
+1. Rebuild the project in [Visual Studio](https://www.visualstudio.com/vs/community/) or [MonoDevelop](http://www.monodevelop.com/).  
+   <small>This will compile the code and package it into the mod directory.</small>
+2. Launch the project with debugging.  
+   <small>This will start the game through SMAPI and attach the Visual Studio debugger.</small>
 
+### Compiling for release
+To package the mod for release:
 
-# Support
-[Forum](http://community.playstarbound.com/threads/smapi-simple-sprinkler.109782/)
-If you like: [patreon](https://www.patreon.com/TZed?ty=h)
+1. Delete the mod's directory in `Mods`.  
+   <small>(This ensures the package is clean and has default configuration.)</small>
+2. Recompile the mod per the previous section.
+3. Launch the game through SMAPI to generate the default `config.json`.
+4. Create a zip file of the mod's folder in the `Mods` folder. The zip name should include the
+   mod name and version (like `SimpleSprinklers 1.3.zip`).
+
+## Support
+* [Forum](http://community.playstarbound.com/threads/smapi-simple-sprinkler.109782/)
+* If you like: [patreon](https://www.patreon.com/TZed?ty=h)
