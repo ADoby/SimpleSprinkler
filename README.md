@@ -20,7 +20,7 @@ setting                | what it affects
 `Locations`          | Where sprinklers should be customised. The default value is fine unless you have custom locations. Default `Farm` and `Greenhouse`.
 `Radius`             | The sprinkler radius for each type. The available types are `599` (basic sprinker), `621` (quality sprinkler), and `645` (iridium sprinkler). Default values 2, 3, and 5 respectively.
 
-## Compiling the mods
+## Compiling the mod
 Installing stable releases from Nexus Mods is recommended for most users. If you really want to
 compile the mod yourself, read on.
 
