@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using System.Linq;
 using SimpleSprinkler.Framework;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
@@ -9,126 +7,72 @@ using StardewValley.TerrainFeatures;
 
 namespace SimpleSprinkler
 {
+    /// <summary>The mod entry class.</summary>
     internal class SimpleSprinklerMod : Mod
     {
         /*********
         ** Properties
         *********/
+        /// <summary>The mod configuration.</summary>
         private SimpleConfig Config;
-        private GameLocation Location;
+
+        /// <summary>Encapsulates the logic for building sprinkler grids.</summary>
+        private GridHelper GridHelper;
 
 
         /*********
         ** Public methods
         *********/
+        /// <summary>The mod entry point, called after the mod is first loaded.</summary>
+        /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper)
         {
             this.Config = helper.ReadConfig<SimpleConfig>();
+            this.GridHelper = new GridHelper(this.Config);
 
             LocationEvents.CurrentLocationChanged += LocationEvents_CurrentLocationChanged;
+        }
+
+        /// <summary>Get an API that other mods can access. This is always called after <see cref="Entry" />.</summary>
+        public override object GetApi()
+        {
+            return new SimpleSprinklerApi(this.Config, this.GridHelper);
         }
 
 
         /*********
         ** Private methods
         *********/
-        /****
-        ** Event handlers
-        ****/
+        /// <summary>The method called when the player enters a new location.</summary>
+        /// <param name="sender">The event sender.</param>
+        /// <param name="e">The event arguments.</param>
         private void LocationEvents_CurrentLocationChanged(object sender, EventArgsCurrentLocationChanged e)
         {
-            if (!Config.Locations.Contains(e.NewLocation.Name))
-                return;
-            Location = e.NewLocation;
-            foreach (var obj in Location.Objects.Values)
-                this.CalculateSimpleSprinkler(obj.ParentSheetIndex, obj.TileLocation, SetWatered);
+            if (this.Config.Locations.Contains(e.NewLocation.Name))
+                this.ApplyWatering(e.NewLocation);
         }
 
-        /****
-        ** Methods
-        ****/
-        private void SetWatered(Vector2 position)
+        /// <summary>Apply watering for supported sprinklers in a location.</summary>
+        /// <param name="location">The location whose sprinklers to apply.</param>
+        private void ApplyWatering(GameLocation location)
         {
-            if (Location.terrainFeatures.ContainsKey(position) && Location.terrainFeatures[position] is HoeDirt)
-                ((HoeDirt)Location.terrainFeatures[position]).state = HoeDirt.watered;
-        }
-
-        private bool IsSimpleSprinkler(int parentSheetIndex, out float range)
-        {
-            foreach (var sprinkler in this.Config.Radius)
+            // get sprinklers
+            var sprinklers = location.Objects.Values.Where(obj => this.IsSprinkler(obj.parentSheetIndex));
+            foreach (Object sprinkler in sprinklers)
             {
-                if (parentSheetIndex == sprinkler.Key)
+                foreach (var tile in this.GridHelper.GetGrid(sprinkler.parentSheetIndex, sprinkler.TileLocation))
                 {
-                    range = sprinkler.Value;
-                    return true;
-                }
-            }
-            range = 0f;
-            return false;
-        }
-
-        private void CalculateSimpleSprinkler(int parentSheetIndex, Vector2 start, Action<Vector2> wateringHandler)
-        {
-            if (wateringHandler == null)
-                return;
-            float range;
-            if (IsSimpleSprinkler(parentSheetIndex, out range) == false)
-                return;
-            CalculateSimpleSprinkler(range, start, wateringHandler);
-        }
-
-        private void CalculateSimpleSprinkler(float range, Vector2 start, Action<Vector2> wateringHandler)
-        {
-            if (wateringHandler == null)
-                return;
-            switch (Config.CalculationMethod)
-            {
-                case CalculationMethods.BOX:
-                    CalculateCircleAndBox(start, range, wateringHandler, false);
-                    break;
-                case CalculationMethods.CIRCLE:
-                    CalculateCircleAndBox(start, range, wateringHandler, true);
-                    break;
-                case CalculationMethods.HORIZONTAL:
-                    CalculateHorizontal(start, range, wateringHandler, true);
-                    break;
-                case CalculationMethods.VERTICAL:
-                    CalculateVertical(start, range, wateringHandler, true);
-                    break;
-            }
-        }
-
-        private void CalculateCircleAndBox(Vector2 start, float range, Action<Vector2> wateringHandler, bool circle)
-        {
-            Vector2 location = start;
-            for (location.X = start.X - range; location.X <= start.X + range; location.X++)
-            {
-                for (location.Y = start.Y - range; location.Y <= start.Y + range; location.Y++)
-                {
-                    //Circle Mode Clamp, AwayFromZero is used to get a cleaner look which creates longer outer edges
-                    if (circle && Math.Round(Vector2.Distance(start, location), MidpointRounding.AwayFromZero) > range)
-                        continue;
-                    wateringHandler.Invoke(location);
+                    if (location.terrainFeatures.TryGetValue(tile, out TerrainFeature terrainFeature) && terrainFeature is HoeDirt dirt)
+                        dirt.state = HoeDirt.watered;
                 }
             }
         }
 
-        private void CalculateHorizontal(Vector2 start, float range, Action<Vector2> wateringHandler, bool circle)
+        /// <summary>Get whether the given object ID matches a supported sprinkler.</summary>
+        /// <param name="objectId">The object ID.</param>
+        private bool IsSprinkler(int objectId)
         {
-            Vector2 location = start;
-            for (location.X = start.X - range; location.X <= start.X + range; location.X++)
-            {
-                wateringHandler.Invoke(location);
-            }
-        }
-
-        private void CalculateVertical(Vector2 start, float range, Action<Vector2> wateringHandler, bool circle)
-        {
-            Vector2 location = start;
-            for (location.Y = start.Y - range; location.Y <= start.Y + range; location.Y++)
-            {
-                wateringHandler.Invoke(location);
-            }
+            return this.Config.Radius.ContainsKey(objectId);
         }
     }
 }

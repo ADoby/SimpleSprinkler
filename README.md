@@ -1,11 +1,11 @@
 **SimpleSprinkler** is a [Stardew Valley](http://stardewvalley.net/) mod which lets you customise
 the sprinkler coverage radius by editing the `config.json`.
 
-Compatible with Stardew Valley 1.1+ on Linux, Mac, and Windows. Requires SMAPI 1.9+.
+Compatible with Stardew Valley 1.2+ on Linux, Mac, and Windows. Requires SMAPI 2.0+.
 
 ## Install
-1. [Install the latest version of SMAPI](https://github.com/Pathoschild/SMAPI/releases).
-2. Download the mod from the [releases page](https://github.com/ADoby/SimpleSprinkler/releases).
+1. [Install the latest version of SMAPI](https://smapi.io).
+2. [Download the mod](https://www.nexusmods.com/stardewvalley/mods/76).
 3. Unzip it into your game's `Mods` folder.
 4. Run the game using SMAPI.
 
