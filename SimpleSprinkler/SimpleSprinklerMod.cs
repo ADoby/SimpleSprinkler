@@ -33,6 +33,12 @@ namespace SimpleSprinkler
             LocationEvents.CurrentLocationChanged += LocationEvents_CurrentLocationChanged;
         }
 
+        /// <summary>Get an API that other mods can access. This is always called after <see cref="Entry" />.</summary>
+        public override object GetApi()
+        {
+            return new SimpleSprinklerApi(this.Config, this.GridHelper);
+        }
+
 
         /*********
         ** Private methods
