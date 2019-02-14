@@ -30,7 +30,7 @@ namespace SimpleSprinkler
             this.Config = helper.ReadConfig<SimpleConfig>();
             this.GridHelper = new GridHelper(this.Config);
 
-            LocationEvents.CurrentLocationChanged += LocationEvents_CurrentLocationChanged;
+            helper.Events.Player.Warped += OnWarped;
         }
 
         /// <summary>Get an API that other mods can access. This is always called after <see cref="Entry" />.</summary>
@@ -43,12 +43,12 @@ namespace SimpleSprinkler
         /*********
         ** Private methods
         *********/
-        /// <summary>The method called when the player enters a new location.</summary>
+        /// <summary>Raised after a player warps to a new location..</summary>
         /// <param name="sender">The event sender.</param>
-        /// <param name="e">The event arguments.</param>
-        private void LocationEvents_CurrentLocationChanged(object sender, EventArgsCurrentLocationChanged e)
+        /// <param name="e">The event data.</param>
+        private void OnWarped(object sender, WarpedEventArgs e)
         {
-            if (this.Config.Locations.Contains(e.NewLocation.Name))
+            if (e.IsLocalPlayer && this.Config.Locations.Contains(e.NewLocation.Name))
                 this.ApplyWatering(e.NewLocation);
         }
 
@@ -57,13 +57,13 @@ namespace SimpleSprinkler
         private void ApplyWatering(GameLocation location)
         {
             // get sprinklers
-            var sprinklers = location.Objects.Values.Where(obj => this.IsSprinkler(obj.parentSheetIndex));
+            var sprinklers = location.Objects.Values.Where(obj => this.IsSprinkler(obj.ParentSheetIndex));
             foreach (Object sprinkler in sprinklers)
             {
-                foreach (var tile in this.GridHelper.GetGrid(sprinkler.parentSheetIndex, sprinkler.TileLocation))
+                foreach (var tile in this.GridHelper.GetGrid(sprinkler.ParentSheetIndex, sprinkler.TileLocation))
                 {
                     if (location.terrainFeatures.TryGetValue(tile, out TerrainFeature terrainFeature) && terrainFeature is HoeDirt dirt)
-                        dirt.state = HoeDirt.watered;
+                        dirt.state.Value = HoeDirt.watered;
                 }
             }
         }
