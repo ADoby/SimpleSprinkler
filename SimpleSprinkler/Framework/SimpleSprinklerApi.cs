@@ -16,6 +16,9 @@ namespace SimpleSprinkler.Framework
         /// <summary>Encapsulates the logic for building sprinkler grids.</summary>
         private readonly GridHelper GridHelper;
 
+        /// <summary>The cached sprinkler coverage.</summary>
+        private IDictionary<int, Vector2[]> Coverage;
+
 
         /*********
         ** Public methods
@@ -32,10 +35,14 @@ namespace SimpleSprinkler.Framework
         /// <summary>Get the relative tile coverage for supported sprinkler IDs (additive to the game's default coverage).</summary>
         public IDictionary<int, Vector2[]> GetNewSprinklerCoverage()
         {
-            IDictionary<int, Vector2[]> coverage = new Dictionary<int, Vector2[]>();
-            foreach (int sprinklerId in this.Config.Radius.Keys)
-                coverage[sprinklerId] = this.GridHelper.GetGrid(sprinklerId, Vector2.Zero).ToArray();
-            return coverage;
+            if (this.Coverage == null)
+            {
+                this.Coverage = new Dictionary<int, Vector2[]>();
+                foreach (int sprinklerId in this.Config.Radius.Keys)
+                    this.Coverage[sprinklerId] = this.GridHelper.GetGrid(sprinklerId, Vector2.Zero).ToArray();
+            }
+
+            return this.Coverage;
         }
     }
 }
