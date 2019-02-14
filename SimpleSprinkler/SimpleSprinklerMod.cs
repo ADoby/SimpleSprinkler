@@ -57,13 +57,13 @@ namespace SimpleSprinkler
         private void ApplyWatering(GameLocation location)
         {
             // get sprinklers
-            var sprinklers = location.Objects.Values.Where(obj => this.IsSprinkler(obj.parentSheetIndex));
+            var sprinklers = location.Objects.Values.Where(obj => this.IsSprinkler(obj.ParentSheetIndex));
             foreach (Object sprinkler in sprinklers)
             {
-                foreach (var tile in this.GridHelper.GetGrid(sprinkler.parentSheetIndex, sprinkler.TileLocation))
+                foreach (var tile in this.GridHelper.GetGrid(sprinkler.ParentSheetIndex, sprinkler.TileLocation))
                 {
                     if (location.terrainFeatures.TryGetValue(tile, out TerrainFeature terrainFeature) && terrainFeature is HoeDirt dirt)
-                        dirt.state = HoeDirt.watered;
+                        dirt.state.Value = HoeDirt.watered;
                 }
             }
         }
